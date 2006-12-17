@@ -1,0 +1,14 @@
+--- #YAML:1.0
+name:                Net-Frame-Layer-IPv6
+version:             1.01
+abstract:            Internet Protocol v6 layer object
+license:             Artistic
+generated_by:        ExtUtils::MakeMaker version 6.31
+distribution_type:   module
+requires:     
+    Net::Frame:                    0
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.2.html
+    version: 1.2
+author:
+    - GomoR <perl@gomor.org>

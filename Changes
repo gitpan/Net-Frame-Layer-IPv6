@@ -1,0 +1,8 @@
+Revision history for Perl extension Net::Frame::Layer::IPv6.
+
+1.01 Sun Dec 17 17:55:09 CET 2006
+   - UPDATE: all layers moved to Net::Frame::Layer::* namespace
+
+1.00 Sat Dec 16 16:45:03 CET 2006
+   - first public release
+
