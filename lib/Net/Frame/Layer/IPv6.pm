@@ -1,11 +1,11 @@
 #
-# $Id: IPv6.pm,v 1.3 2006/12/17 16:54:56 gomor Exp $
+# $Id: IPv6.pm 21 2009-05-31 15:17:22Z gomor $
 #
 package Net::Frame::Layer::IPv6;
 use strict;
 use warnings;
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 use Net::Frame::Layer qw(:consts :subs);
 require Exporter;
@@ -40,6 +40,7 @@ our %EXPORT_TAGS = (
       NF_IPv6_PROTOCOL_VRRP
       NF_IPv6_PROTOCOL_STP
       NF_IPv6_PROTOCOL_SCTP
+      NF_IPv6_PROTOCOL_UDPLITE
    )],
 );
 our @EXPORT_OK = (
@@ -73,6 +74,7 @@ use constant NF_IPv6_PROTOCOL_PIM          => 0x67;
 use constant NF_IPv6_PROTOCOL_VRRP         => 0x70;
 use constant NF_IPv6_PROTOCOL_STP          => 0x76;
 use constant NF_IPv6_PROTOCOL_SCTP         => 0x84;
+use constant NF_IPv6_PROTOCOL_UDPLITE      => 0x88;
 
 our @AS = qw(
    version
@@ -93,7 +95,7 @@ BEGIN {
 
 no strict 'vars';
 
-require Bit::Vector;
+use Bit::Vector;
 
 sub new {
    shift->SUPER::new(
@@ -109,14 +111,30 @@ sub new {
    );
 }
 
-sub getLength        { NF_IPv6_HDR_LEN           }
-sub getPayloadLength { shift->[$__payloadLength] }
+sub getLength { NF_IPv6_HDR_LEN }
 
 sub computeLengths {
    my $self = shift;
-   my ($h)  = @_;
-   $self->[$__payloadLength] = $h->{payloadLength};
-   1;
+   my ($layers) = @_;
+
+   my $len = 0;
+   my $last;
+   my $start;
+   for my $l (@$layers) {
+      if (! $start) {
+         $start++ if $l->layer eq 'IPv6';
+         next;
+      }
+      $len += $l->getLength;
+      $last = $l;
+   }
+   if (defined($last->payload)) {
+      $len += length($last->payload);
+   }
+
+   $self->payloadLength($len);
+
+   return 1;
 }
 
 sub pack {
@@ -194,6 +212,7 @@ sub encapsulate {
       NF_IPv6_PROTOCOL_VRRP()         => 'VRRP',
       NF_IPv6_PROTOCOL_STP()          => 'STP',
       NF_IPv6_PROTOCOL_SCTP()         => 'SCTP',
+      NF_IPv6_PROTOCOL_UDPLITE()      => 'UDPLite',
    };
 
    $types->{$self->[$__nextHeader]} || NF_LAYER_UNKNOWN;
@@ -223,7 +242,7 @@ Net::Frame::Layer::IPv6 - Internet Protocol v6 layer object
 
    use Net::Frame::Layer::IPv6 qw(:consts);
 
-   # Build a layer
+   # Build a layer
    my $layer = Net::Frame::Layer::IPv6->new(
       version       => 6,
       trafficClass  => 0,
@@ -329,8 +348,6 @@ The following are inherited methods. Some of them may be overriden in this layer
 
 =item B<computeLengths>
 
-=item B<computeChecksums>
-
 =item B<pack>
 
 =item B<unpack>
@@ -338,8 +355,6 @@ The following are inherited methods. Some of them may be overriden in this layer
 =item B<encapsulate>
 
 =item B<getLength>
-
-=item B<getPayloadLength>
 
 =item B<print>
 
@@ -405,6 +420,8 @@ Load them: use Net::Frame::Layer::IPv6 qw(:consts);
 
 =item B<NF_IPv6_PROTOCOL_SCTP>
 
+=item B<NF_IPv6_PROTOCOL_UDPLITE>
+
 Constants for B<nextHeader> attribute.
 
 =back
@@ -419,7 +436,7 @@ Patrice E<lt>GomoRE<gt> Auffret
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2006, Patrice E<lt>GomoRE<gt> Auffret
+Copyright (c) 2006-2009, Patrice E<lt>GomoRE<gt> Auffret
 
 You may distribute this module under the terms of the Artistic license.
 See LICENSE.Artistic file in the source distribution archive.

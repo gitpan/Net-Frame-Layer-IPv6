@@ -1,5 +1,11 @@
 Revision history for Perl extension Net::Frame::Layer::IPv6.
 
+1.02 Sun May 31 17:16:11 CEST 2009
+   - new: support for UDPLite layer
+   - update: computeChecksum() and computeLengths() to reflect new computation
+             scheme from Net::Frame::Simple
+   - update: copyright notice
+
 1.01 Sun Dec 17 17:55:09 CET 2006
    - UPDATE: all layers moved to Net::Frame::Layer::* namespace
 
