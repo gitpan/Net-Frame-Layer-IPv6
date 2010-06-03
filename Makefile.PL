@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.PL 21 2009-05-31 15:17:22Z gomor $
+# $Id: Makefile.PL 24 2010-06-03 12:43:58Z gomor $
 #
 use ExtUtils::MakeMaker;
 
@@ -12,6 +12,7 @@ WriteMakefile(
    ABSTRACT_FROM => 'lib/Net/Frame/Layer/IPv6.pm',
    AUTHOR        => 'GomoR <gomor-cpan_at_gomor.org>',
    PREREQ_PM     => {
-      Net::Frame => 0,
+      Net::Frame  => 0,
+      Bit::Vector => 0,
    },
 );

@@ -1,11 +1,11 @@
 #
-# $Id: IPv6.pm 21 2009-05-31 15:17:22Z gomor $
+# $Id: IPv6.pm 24 2010-06-03 12:43:58Z gomor $
 #
 package Net::Frame::Layer::IPv6;
 use strict;
 use warnings;
 
-our $VERSION = '1.02';
+our $VERSION = '1.03';
 
 use Net::Frame::Layer qw(:consts :subs);
 require Exporter;
@@ -436,7 +436,7 @@ Patrice E<lt>GomoRE<gt> Auffret
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2006-2009, Patrice E<lt>GomoRE<gt> Auffret
+Copyright (c) 2006-2010, Patrice E<lt>GomoRE<gt> Auffret
 
 You may distribute this module under the terms of the Artistic license.
 See LICENSE.Artistic file in the source distribution archive.
