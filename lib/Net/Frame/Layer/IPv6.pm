@@ -1,11 +1,11 @@
 #
-# $Id: IPv6.pm 24 2010-06-03 12:43:58Z gomor $
+# $Id: IPv6.pm 31 2012-02-23 19:20:15Z gomor $
 #
 package Net::Frame::Layer::IPv6;
 use strict;
 use warnings;
 
-our $VERSION = '1.03';
+our $VERSION = '1.04';
 
 use Net::Frame::Layer qw(:consts :subs);
 require Exporter;
@@ -15,7 +15,7 @@ our %EXPORT_TAGS = (
    consts => [qw(
       NF_IPv6_HDR_LEN
       NF_IPv6_PROTOCOL_ICMPv4
-      NF_IPv6_PROTOCOL_IGMPv4
+      NF_IPv6_PROTOCOL_IGMP
       NF_IPv6_PROTOCOL_IPIP
       NF_IPv6_PROTOCOL_TCP
       NF_IPv6_PROTOCOL_EGP
@@ -49,7 +49,7 @@ our @EXPORT_OK = (
 
 use constant NF_IPv6_HDR_LEN               => 40;
 use constant NF_IPv6_PROTOCOL_ICMPv4       => 0x01;
-use constant NF_IPv6_PROTOCOL_IGMPv4       => 0x02;
+use constant NF_IPv6_PROTOCOL_IGMP         => 0x02;
 use constant NF_IPv6_PROTOCOL_IPIP         => 0x04;
 use constant NF_IPv6_PROTOCOL_TCP          => 0x06;
 use constant NF_IPv6_PROTOCOL_EGP          => 0x08;
@@ -187,7 +187,7 @@ sub encapsulate {
 
    my $types = {           
       NF_IPv6_PROTOCOL_ICMPv4()       => 'ICMPv4',
-      NF_IPv6_PROTOCOL_IGMPv4()       => 'IGMPv4',
+      NF_IPv6_PROTOCOL_IGMP()         => 'IGMP',
       NF_IPv6_PROTOCOL_IPIP()         => 'IPIP',
       NF_IPv6_PROTOCOL_TCP()          => 'TCP',
       NF_IPv6_PROTOCOL_EGP()          => 'EGP',
@@ -197,8 +197,8 @@ sub encapsulate {
       NF_IPv6_PROTOCOL_IDP()          => 'IDP',
       NF_IPv6_PROTOCOL_DCCP()         => 'DCCP',
       NF_IPv6_PROTOCOL_IPv6()         => 'IPv6',
-      NF_IPv6_PROTOCOL_IPv6ROUTING()  => 'IPv6Routing',
-      NF_IPv6_PROTOCOL_IPv6FRAGMENT() => 'IPv6Fragment',
+      NF_IPv6_PROTOCOL_IPv6ROUTING()  => 'IPv6::Routing',
+      NF_IPv6_PROTOCOL_IPv6FRAGMENT() => 'IPv6::Fragment',
       NF_IPv6_PROTOCOL_IDRP()         => 'IDRP',
       NF_IPv6_PROTOCOL_RSVP()         => 'RSVP',
       NF_IPv6_PROTOCOL_GRE()          => 'GRE',
@@ -370,7 +370,7 @@ Load them: use Net::Frame::Layer::IPv6 qw(:consts);
 
 =item B<NF_IPv6_PROTOCOL_ICMPv4>
 
-=item B<NF_IPv6_PROTOCOL_IGMPv4>
+=item B<NF_IPv6_PROTOCOL_IGMP>
 
 =item B<NF_IPv6_PROTOCOL_IPIP>
 
@@ -436,7 +436,7 @@ Patrice E<lt>GomoRE<gt> Auffret
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2006-2010, Patrice E<lt>GomoRE<gt> Auffret
+Copyright (c) 2006-2012, Patrice E<lt>GomoRE<gt> Auffret
 
 You may distribute this module under the terms of the Artistic license.
 See LICENSE.Artistic file in the source distribution archive.

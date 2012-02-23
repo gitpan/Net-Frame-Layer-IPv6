@@ -1,4 +1,4 @@
-eval "use Test::Pod::Coverage tests => 1";
+eval "use Test::Pod::Coverage tests => 3";
 if ($@) {
    use Test;
    plan(tests => 1);
@@ -6,4 +6,6 @@ if ($@) {
 }
 else {
    pod_coverage_ok("Net::Frame::Layer::IPv6");
+   pod_coverage_ok("Net::Frame::Layer::IPv6::Fragment");
+   pod_coverage_ok("Net::Frame::Layer::IPv6::Routing");
 }
