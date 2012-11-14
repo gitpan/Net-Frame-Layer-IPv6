@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.PL 24 2010-06-03 12:43:58Z gomor $
+# $Id: Makefile.PL 36 2012-11-10 15:34:49Z gomor $
 #
 use ExtUtils::MakeMaker;
 
@@ -15,4 +15,5 @@ WriteMakefile(
       Net::Frame  => 0,
       Bit::Vector => 0,
    },
+   MIN_PERL_VERSION => '5.6.1',
 );

@@ -1,11 +1,11 @@
 #
-# $Id: IPv6.pm 31 2012-02-23 19:20:15Z gomor $
+# $Id: IPv6.pm 34 2012-10-19 01:09:13Z gomor $
 #
 package Net::Frame::Layer::IPv6;
 use strict;
 use warnings;
 
-our $VERSION = '1.04';
+our $VERSION = '1.05';
 
 use Net::Frame::Layer qw(:consts :subs);
 require Exporter;
@@ -41,24 +41,78 @@ our %EXPORT_TAGS = (
       NF_IPv6_PROTOCOL_STP
       NF_IPv6_PROTOCOL_SCTP
       NF_IPv6_PROTOCOL_UDPLITE
+      NF_IPv6_PROTOCOL_IPv6HOPBYHOP
+      NF_IPv6_PROTOCOL_GGP
+      NF_IPv6_PROTOCOL_ST
+      NF_IPv6_PROTOCOL_CBT
+      NF_IPv6_PROTOCOL_PUP
+      NF_IPv6_PROTOCOL_ARGUS
+      NF_IPv6_PROTOCOL_EMCON
+      NF_IPv6_PROTOCOL_XNET
+      NF_IPv6_PROTOCOL_MUX
+      NF_IPv6_PROTOCOL_DCNMEAS
+      NF_IPv6_PROTOCOL_HMP
+      NF_IPv6_PROTOCOL_PRM
+      NF_IPv6_PROTOCOL_TRUNK1
+      NF_IPv6_PROTOCOL_TRUNK2
+      NF_IPv6_PROTOCOL_LEAF1
+      NF_IPv6_PROTOCOL_LEAF2
+      NF_IPv6_PROTOCOL_3PC
+      NF_IPv6_PROTOCOL_IDPR
+      NF_IPv6_PROTOCOL_XTP
+      NF_IPv6_PROTOCOL_DDP
+      NF_IPv6_PROTOCOL_IDPRCMTP
+      NF_IPv6_PROTOCOL_TPPLUSPLUS
+      NF_IPv6_PROTOCOL_IL
+      NF_IPv6_PROTOCOL_SDRP
+      NF_IPv6_PROTOCOL_IPv6NONEXT
+      NF_IPv6_PROTOCOL_IPv6DESTINATION
+      NF_IPv6_PROTOCOL_IPv6MOBILITY
    )],
 );
 our @EXPORT_OK = (
    @{$EXPORT_TAGS{consts}},
 );
 
+#
+# http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xml
+#
 use constant NF_IPv6_HDR_LEN               => 40;
+use constant NF_IPv6_PROTOCOL_IPv6HOPBYHOP => 0x00;
 use constant NF_IPv6_PROTOCOL_ICMPv4       => 0x01;
 use constant NF_IPv6_PROTOCOL_IGMP         => 0x02;
+use constant NF_IPv6_PROTOCOL_GGP          => 0x03;
 use constant NF_IPv6_PROTOCOL_IPIP         => 0x04;
+use constant NF_IPv6_PROTOCOL_ST           => 0x05;
 use constant NF_IPv6_PROTOCOL_TCP          => 0x06;
+use constant NF_IPv6_PROTOCOL_CBT          => 0x07;
 use constant NF_IPv6_PROTOCOL_EGP          => 0x08;
 use constant NF_IPv6_PROTOCOL_IGRP         => 0x09;
+use constant NF_IPv6_PROTOCOL_PUP          => 0x0c;
+use constant NF_IPv6_PROTOCOL_ARGUS        => 0x0d;
+use constant NF_IPv6_PROTOCOL_EMCON        => 0x0e;
+use constant NF_IPv6_PROTOCOL_XNET         => 0x0f;
 use constant NF_IPv6_PROTOCOL_CHAOS        => 0x10;
 use constant NF_IPv6_PROTOCOL_UDP          => 0x11;
+use constant NF_IPv6_PROTOCOL_MUX          => 0x12;
+use constant NF_IPv6_PROTOCOL_DCNMEAS      => 0x13;
+use constant NF_IPv6_PROTOCOL_HMP          => 0x14;
+use constant NF_IPv6_PROTOCOL_PRM          => 0x15;
 use constant NF_IPv6_PROTOCOL_IDP          => 0x16;
+use constant NF_IPv6_PROTOCOL_TRUNK1       => 0x17;
+use constant NF_IPv6_PROTOCOL_TRUNK2       => 0x18;
+use constant NF_IPv6_PROTOCOL_LEAF1        => 0x19;
+use constant NF_IPv6_PROTOCOL_LEAF2        => 0x20;
 use constant NF_IPv6_PROTOCOL_DCCP         => 0x21;
+use constant NF_IPv6_PROTOCOL_3PC          => 0x22;
+use constant NF_IPv6_PROTOCOL_IDPR         => 0x23;
+use constant NF_IPv6_PROTOCOL_XTP          => 0x24;
+use constant NF_IPv6_PROTOCOL_DDP          => 0x25;
+use constant NF_IPv6_PROTOCOL_IDPRCMTP     => 0x26;
+use constant NF_IPv6_PROTOCOL_TPPLUSPLUS   => 0x27;
+use constant NF_IPv6_PROTOCOL_IL           => 0x28;
 use constant NF_IPv6_PROTOCOL_IPv6         => 0x29;
+use constant NF_IPv6_PROTOCOL_SDRP         => 0x2a;
 use constant NF_IPv6_PROTOCOL_IPv6ROUTING  => 0x2b;
 use constant NF_IPv6_PROTOCOL_IPv6FRAGMENT => 0x2c;
 use constant NF_IPv6_PROTOCOL_IDRP         => 0x2d;
@@ -67,14 +121,17 @@ use constant NF_IPv6_PROTOCOL_GRE          => 0x2f;
 use constant NF_IPv6_PROTOCOL_ESP          => 0x32;
 use constant NF_IPv6_PROTOCOL_AH           => 0x33;
 use constant NF_IPv6_PROTOCOL_ICMPv6       => 0x3a;
-use constant NF_IPv6_PROTOCOL_EIGRP        => 0x58;
-use constant NF_IPv6_PROTOCOL_OSPF         => 0x59;
-use constant NF_IPv6_PROTOCOL_ETHERIP      => 0x61;
-use constant NF_IPv6_PROTOCOL_PIM          => 0x67;
-use constant NF_IPv6_PROTOCOL_VRRP         => 0x70;
-use constant NF_IPv6_PROTOCOL_STP          => 0x76;
-use constant NF_IPv6_PROTOCOL_SCTP         => 0x84;
-use constant NF_IPv6_PROTOCOL_UDPLITE      => 0x88;
+use constant NF_IPv6_PROTOCOL_IPv6NONEXT   => 0x3b;
+use constant NF_IPv6_PROTOCOL_IPv6DESTINATION => 0x3c;
+use constant NF_IPv6_PROTOCOL_EIGRP           => 0x58;
+use constant NF_IPv6_PROTOCOL_OSPF            => 0x59;
+use constant NF_IPv6_PROTOCOL_ETHERIP         => 0x61;
+use constant NF_IPv6_PROTOCOL_PIM             => 0x67;
+use constant NF_IPv6_PROTOCOL_VRRP            => 0x70;
+use constant NF_IPv6_PROTOCOL_STP             => 0x76;
+use constant NF_IPv6_PROTOCOL_SCTP            => 0x84;
+use constant NF_IPv6_PROTOCOL_IPv6MOBILITY    => 0x87;
+use constant NF_IPv6_PROTOCOL_UDPLITE         => 0x88;
 
 our @AS = qw(
    version
@@ -213,6 +270,33 @@ sub encapsulate {
       NF_IPv6_PROTOCOL_STP()          => 'STP',
       NF_IPv6_PROTOCOL_SCTP()         => 'SCTP',
       NF_IPv6_PROTOCOL_UDPLITE()      => 'UDPLite',
+      NF_IPv6_PROTOCOL_IPv6DESTINATION() => 'IPv6::Destination',
+      NF_IPv6_PROTOCOL_IPv6MOBILITY()    => 'IPv6::Mobility',
+      NF_IPv6_PROTOCOL_IPv6HOPBYHOP()    => 'IPv6::HopByHop',
+      NF_IPv6_PROTOCOL_GGP()             => 'GGP',
+      NF_IPv6_PROTOCOL_ST()              => 'ST',
+      NF_IPv6_PROTOCOL_CBT()             => 'CBT',
+      NF_IPv6_PROTOCOL_PUP()             => 'PUP',
+      NF_IPv6_PROTOCOL_ARGUS()           => 'ARGUS',
+      NF_IPv6_PROTOCOL_EMCON()           => 'EMCON',
+      NF_IPv6_PROTOCOL_XNET()            => 'XNET',
+      NF_IPv6_PROTOCOL_MUX()             => 'MUX',
+      NF_IPv6_PROTOCOL_DCNMEAS()         => 'DCNMEAS',
+      NF_IPv6_PROTOCOL_HMP()             => 'HMP',
+      NF_IPv6_PROTOCOL_PRM()             => 'PRM',
+      NF_IPv6_PROTOCOL_TRUNK1()          => 'TRUNK1',
+      NF_IPv6_PROTOCOL_TRUNK2()          => 'TRUNK2',
+      NF_IPv6_PROTOCOL_LEAF1()           => 'LEAF1',
+      NF_IPv6_PROTOCOL_LEAF2()           => 'LEAF2',
+      NF_IPv6_PROTOCOL_3PC()             => '3PC',
+      NF_IPv6_PROTOCOL_IDPR()            => 'IDPR',
+      NF_IPv6_PROTOCOL_XTP()             => 'XTP',
+      NF_IPv6_PROTOCOL_DDP()             => 'DDP',
+      NF_IPv6_PROTOCOL_IDPRCMTP()        => 'IDPRCMTP',
+      NF_IPv6_PROTOCOL_TPPLUSPLUS()      => 'TPPlusPlus',
+      NF_IPv6_PROTOCOL_IL()              => 'IL',
+      NF_IPv6_PROTOCOL_SDRP()            => 'SDRP',
+      NF_IPv6_PROTOCOL_IPv6NONEXT()      => 'IPv6::NoNext',
    };
 
    $types->{$self->[$__nextHeader]} || NF_LAYER_UNKNOWN;
@@ -421,6 +505,60 @@ Load them: use Net::Frame::Layer::IPv6 qw(:consts);
 =item B<NF_IPv6_PROTOCOL_SCTP>
 
 =item B<NF_IPv6_PROTOCOL_UDPLITE>
+
+=item B<NF_IPv6_PROTOCOL_IPv6HOPBYHOP>
+
+=item B<NF_IPv6_PROTOCOL_GGP>
+
+=item B<NF_IPv6_PROTOCOL_ST>
+
+=item B<NF_IPv6_PROTOCOL_CBT>
+
+=item B<NF_IPv6_PROTOCOL_PUP>
+
+=item B<NF_IPv6_PROTOCOL_ARGUS>
+
+=item B<NF_IPv6_PROTOCOL_EMCON>
+
+=item B<NF_IPv6_PROTOCOL_XNET>
+
+=item B<NF_IPv6_PROTOCOL_MUX>
+
+=item B<NF_IPv6_PROTOCOL_DCNMEAS>
+
+=item B<NF_IPv6_PROTOCOL_HMP>
+
+=item B<NF_IPv6_PROTOCOL_PRM>
+
+=item B<NF_IPv6_PROTOCOL_TRUNK1>
+
+=item B<NF_IPv6_PROTOCOL_TRUNK2>
+
+=item B<NF_IPv6_PROTOCOL_LEAF1>
+
+=item B<NF_IPv6_PROTOCOL_LEAF2>
+
+=item B<NF_IPv6_PROTOCOL_3PC>
+
+=item B<NF_IPv6_PROTOCOL_IDPR>
+
+=item B<NF_IPv6_PROTOCOL_XTP>
+
+=item B<NF_IPv6_PROTOCOL_DDP>
+
+=item B<NF_IPv6_PROTOCOL_IDPRCMTP>
+
+=item B<NF_IPv6_PROTOCOL_TPPLUSPLUS>
+
+=item B<NF_IPv6_PROTOCOL_IL>
+
+=item B<NF_IPv6_PROTOCOL_SDRP>
+
+=item B<NF_IPv6_PROTOCOL_IPv6NONEXT>
+
+=item B<NF_IPv6_PROTOCOL_IPv6DESTINATION>
+
+=item B<NF_IPv6_PROTOCOL_IPv6MOBILITY>
 
 Constants for B<nextHeader> attribute.
 

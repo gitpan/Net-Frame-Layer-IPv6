@@ -1,5 +1,5 @@
 #
-# $Id: Fragment.pm 30 2012-02-23 19:18:17Z gomor $
+# $Id: Fragment.pm 34 2012-10-19 01:09:13Z gomor $
 #
 package Net::Frame::Layer::IPv6::Fragment;
 use strict; use warnings;
@@ -9,14 +9,6 @@ our $VERSION = '1.00';
 use Net::Frame::Layer qw(:consts :subs);
 use Exporter;
 our @ISA = qw(Net::Frame::Layer Exporter);
-
-our %EXPORT_TAGS = (
-   consts => [qw(
-   )],
-);
-our @EXPORT_OK = (
-   @{$EXPORT_TAGS{consts}},
-);
 
 our @AS = qw(
    nextHeader
@@ -90,7 +82,7 @@ sub encapsulate {
 
    if ($self->payload) {
       my $next = $self->nextHeader;
-      return Net::Frame::Layer::IPv6->new(nextHeader=>$self->nextHeader)->encapsulate
+      return Net::Frame::Layer::IPv6->new(nextHeader => $self->nextHeader)->encapsulate;
    }
 
    return NF_LAYER_NONE;
