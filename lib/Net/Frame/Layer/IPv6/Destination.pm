@@ -1,5 +1,5 @@
 #
-# $Id: Destination.pm 40 2012-11-13 19:49:06Z gomor $
+# $Id: Destination.pm 45 2014-04-09 07:51:48Z gomor $
 #
 package Net::Frame::Layer::IPv6::Destination;
 use strict; use warnings;
@@ -222,7 +222,7 @@ Object constructor. You can pass attributes that will overwrite default ones. Se
 
 =back
 
-The following are inherited methods. Some of them may be overriden in this layer, and some others may not be meaningful in this layer. See B<Net::Frame::Layer> for more information.
+The following are inherited methods. Some of them may be overridden in this layer, and some others may not be meaningful in this layer. See B<Net::Frame::Layer> for more information.
 
 =over 4
 
@@ -264,7 +264,7 @@ Michael Vincent
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2012, Michael Vincent
+Copyright (c) 2012-2014, Michael Vincent
 
 You may distribute this module under the terms of the Artistic license.
 See LICENSE.Artistic file in the source distribution archive.

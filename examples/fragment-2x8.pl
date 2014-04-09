@@ -1,4 +1,4 @@
-#!/usr/bin/perl;
+#!/usr/bin/perl
 
 # Not all hosts respond to IPv6 fragments
 # Examples that do:

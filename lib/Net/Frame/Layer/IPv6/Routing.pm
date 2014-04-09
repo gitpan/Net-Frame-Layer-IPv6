@@ -1,5 +1,5 @@
 #
-# $Id: Routing.pm 34 2012-10-19 01:09:13Z gomor $
+# $Id: Routing.pm 45 2014-04-09 07:51:48Z gomor $
 #
 package Net::Frame::Layer::IPv6::Routing;
 use strict; use warnings;
@@ -259,7 +259,7 @@ Disable (0) or enable (1) automatic computing of B<segmentsLeft> by the B<comput
 
 =back
 
-The following are inherited methods. Some of them may be overriden in this layer, and some others may not be meaningful in this layer. See B<Net::Frame::Layer> for more information.
+The following are inherited methods. Some of them may be overridden in this layer, and some others may not be meaningful in this layer. See B<Net::Frame::Layer> for more information.
 
 =over 4
 
@@ -299,7 +299,7 @@ Michael Vincent
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2012, Michael Vincent
+Copyright (c) 2012-2014, Michael Vincent
 
 You may distribute this module under the terms of the Artistic license.
 See LICENSE.Artistic file in the source distribution archive.
